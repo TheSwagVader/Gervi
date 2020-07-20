@@ -1,0 +1,11 @@
+[META-INFO]
+Author=TheSwagVader
+Version=1.0
+[MEMORY]
+SegmentSize=8 ; in bits
+[WM]
+Heigth=4
+Width=4
+[RAM]
+Heigth=1
+Width=1

@@ -1,0 +1,6 @@
+test*.*
+SRE/__pycache__/
+SRE/bmtest.py
+SRE/test*.*
+*.log
+SRE/*.log
