@@ -53,6 +53,20 @@ class BinaryData:
         return self.__data[index]
 
     #inserting methods
+    def valueOf(self, binaryDataObject):
+        if str(self).find('1') != -1:
+            self.resetAll()
+        cachedbdo = str(binaryDataObject)
+        supplier = self.size - len(cachedbdo)
+        if supplier < 0:
+            raise TooBigValueOfException('The size of binaryDataObject greater than %s bits' % (self.size))
+        cachedbdo = '0' * supplier + cachedbdo
+        for i in range(self.size):
+            if cachedbdo[i] == '1':
+                self.setValue(i)
+            else:
+                self.resetValue(i)
+
     def valueOfNumber(self, integerValue):
         if str(self).find('1') != -1:
             self.resetAll()
@@ -67,6 +81,12 @@ class BinaryData:
 
     def valueOfChar(self, character):
         self.valueOfNumber(ord(character))
+    
+    def valueOfBoolean(self, booleanValue):
+        if booleanValue:
+            self.valueOfNumber(1)
+        else:
+            self.valueOfNumber(0)
     #end inserting methods
 
     #getting methods
@@ -96,6 +116,9 @@ class BinaryData:
             return chr(cache)
         except ValueError:
             raise InvalidCharNumberException('Char code must be in 0..1114111, got %d' % (cache))
+    
+    def getBoolean(self):
+        return bool(self.getElement(-1))
     # end getting methods
 
     #logical methods
