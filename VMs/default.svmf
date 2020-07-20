@@ -1,11 +1,12 @@
 [META-INFO]
+Name=Segon default
 Author=TheSwagVader
 Version=1.0
 [MEMORY]
 SegmentSize=8 ; in bits
 [WM]
-Heigth=4
-Width=4
+SizeV=4
+SizeH=4
 [RAM]
-Heigth=1
-Width=1
+SizeV=1
+SizeH=1
