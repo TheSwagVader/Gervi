@@ -8,19 +8,31 @@ class TooSmallBinaryDataSizeForReadingWordException(BaseException): ...
 
 class InvalidCharNumberException(BaseException): ...
 
+class TooBigOtherValueException(BaseException): ...
+
 class BinaryData:
     def __init__(self, size = 8):
         if size < 8:
             raise TooSmallBinaryDataSizeException('Require 8 bit for BinaryData size, but got %d' % (size))
         self.__data = [0 for i in range(size)]
         self.size = size
-    def __str__(self):
-    
+    def __str__(self):    
         string = ''
         for i in range(len(self.__data)):
             string += str(self.__data[i])
         return string
     
+    def __returnStrArgs(self, other):
+        return [str(self), str(other)]
+    
+    def __supply(self, other):
+        processList = self.__returnStrArgs(other)
+        supplier = len(processList[0]) - len(processList[1])
+        if supplier < 0:
+            raise TooBigOtherValueException('Size of other (%d bits) greater than %d bits' % (other.size, self.size))
+        processList[1] = '0' * supplier + processList[1]
+        return processList
+
     def __eq__(self, other):
         return str(self) == str(other)
     
@@ -40,6 +52,7 @@ class BinaryData:
     def getElement(self, index):
         return self.__data[index]
 
+    #inserting methods
     def valueOfNumber(self, integerValue):
         if str(self).find('1') != -1:
             self.resetAll()
@@ -51,18 +64,13 @@ class BinaryData:
         for i in range(self.size):
             if inInt[i] == '1':
                 self.setValue(i)
-    
-    #def valueOfWord(self, wordValue):
-    #    if wordValue > 65535:
-    #        raise IsNotWordValueException('Excepted value lesser than 65536, got %d' % (wordValue))
-    #    inWord = bin(wordValue)[2:]
-    #    supplier = self.size - len(inWord)
-    #    if supplier < 0:
-    #        raise TooBigValueOfException('The size of inWord(16 bits) greater than %d bits' % (self.size))
-    #    inWord = '0' * supplier + inWord
-    #    for i in range(self.size):
-    #        if inWord[i] == '1':
-    #            self.setValue(i)
+
+    def valueOfChar(self, character):
+        self.valueOfNumber(ord(character))
+    #end inserting methods
+
+    #getting methods
+
     def getInt(self):
         numString = str(self)
         numString = numString[numString.find('1'):]
@@ -92,29 +100,113 @@ class BinaryData:
 
     #logical methods
 
+    #common logical methods
     def logicAnd(self, other):
         #if self.size < second.size:
         #    raise TooBigV
-        selfStr, otherStr = str(self), str(other)
-        supplier = len(selfStr) - len(otherStr)
-        if supplier < 0:
-            raise TooBigValueOfException('The size of inInt greater than %s bits' % (self.size))
-        otherStr = '0' * supplier + otherStr
+        processData = self.__supply(other)
         for i in range(self.size):
-            if selfStr[i] == '1' == otherStr[i]:
+            if processData[0][i] == '1' == processData[1][i]:
                 self.setValue(i)
             else:
                 self.resetValue(i)
     
     def logicOr(self, other):
-        selfStr, otherStr = str(self), str(other)
-        supplier = len(selfStr) - len(otherStr)
-        if supplier < 0:
-            raise TooBigValueOfException('The size of inInt greater than %s bits' % (self.size))
-        otherStr = '0' * supplier + otherStr
+        processData = self.__supply(other)
         for i in range(self.size):
-            if selfStr[i] == '1' or otherStr[i] == '1':
+            if processData[0][i] == '1' or processData[1][i] == '1':
                 self.setValue(i)
             else:
                 self.resetValue(i)
 
+    def logicNot(self):
+        for i in range(self.size):
+            if self.getElement(i) == 0:
+                self.setValue(i)
+            else:
+                self.resetValue(i)
+    
+    def logicXor(self, other):
+        processData = self.__supply(other)
+        for i in range(self.size):
+            if (processData[0][i] == '1' and processData[1][i] == '1') or (processData[0][i] == '0' and processData[1][i] == '0'):
+                self.resetValue(i)
+            else:
+                self.setValue(i)
+    
+    def logicNand(self, other):
+        processData = self.__supply(other)
+        for i in range(self.size):
+            if not (processData[0][i] == '1' == processData[1][i]):
+                self.setValue(i)
+            else:
+                self.resetValue(i)
+    
+    def logicNor(self, other):
+        processData = self.__supply(other)
+        for i in range(self.size):
+            if not (processData[0][i] == '1' or processData[1][i] == '1'):
+                self.setValue(i)
+            else:
+                self.resetValue(i)
+
+    def logicXnor(self, other):
+        processData = self.__supply(other)
+        for i in range(self.size):
+            if not (processData[0][i] == '1' and processData[1][i] == '1') or not (processData[0][i] == '0' and processData[1][i] == '0'):
+                self.resetValue(i)
+            else:
+                self.setValue(i)
+    
+    #uncommon logical methods
+
+    def logicImp(self, other):
+        processData = self.__supply(other)
+        for i in range(self.size):
+            if processData[0][i] == '1' and processData[1][i] == '0':
+                self.setValue(i)
+            else:
+                self.resetValue(i)
+    
+    def logicRimp(self, other):
+        processData = self.__supply(other)
+        for i in range(self.size):
+            if processData[0][i] == '0' and processData[1][i] == '1':
+                self.setValue(i)
+            else:
+                self.resetValue(i)
+    
+    def logicNimp(self, other):
+        processData = self.__supply(other)
+        for i in range(self.size):
+            if not (processData[0][i] == '1' and processData[1][i] == '0'):
+                self.setValue(i)
+            else:
+                self.resetValue(i)
+    
+    def logicNrimp(self, other):
+        processData = self.__supply(other)
+        for i in range(self.size):
+            if not (processData[0][i] == '0' and processData[1][i] == '1'):
+                self.setValue(i)
+            else:
+                self.resetValue(i)
+    
+    def logicEqv(self, other):
+        processData = self.__supply(other)
+        for i in range(self.size):
+            if processData[0][i] == processData[1][i]:
+                self.setValue(i)
+            else:
+                self.resetValue(i)
+    
+    def logicNeqv(self, other):
+        processData = self.__supply(other)
+        for i in range(self.size):
+            if processData[0][i] != processData[1][i]:
+                self.setValue(i)
+            else:
+                self.resetValue(i)
+    
+    #end logical methods
+    
