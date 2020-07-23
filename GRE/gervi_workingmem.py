@@ -1,4 +1,4 @@
-from segon_bindata import BinaryData
+from gervi_bindata import BinaryData
 
 class WorkingMemory:
     def __init__(self, segmentSize,  horizontalSize, verticalSize):
