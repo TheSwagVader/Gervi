@@ -13,4 +13,21 @@ class GerviError(GerviThrowable):
         self.__errorMsg = errorMsg
         self.__errorLevel = errorLevel
     
-    #def throw(self):
+    def throw(self):
+        print('%s (%s): %s' % (self.__errorName, self.__errorLevel.name, self.__errorMsg))
+        if self.__errorLevel == ErrorLevels.WARNING:
+            return 0
+        elif self.__errorLevel == ErrorLevels.ERROR:
+            answer = input('Continue? (y/n):')
+            return 0 if answer == 'y' else 1
+        else: 
+            return 1
+
+class GerviException(GerviThrowable):
+    def __init__(self, exceptionName, exceptionMsg):
+        self.__exceptionName = exceptionName
+        self.__exceptionMsg = exceptionMsg
+    
+    def throw(self):
+        print('%s: %s' % (self.__exceptionName, self.__exceptionMsg))
+        return 1
