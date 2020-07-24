@@ -1,6 +1,6 @@
 test*.*
-SRE/__pycache__/
-SRE/bmtest.py
-SRE/test*.*
+GRE/__pycache__/
+GRE/bmtest.py
+GRE/test*.*
 *.log
-SRE/*.log
+GRE/*.log

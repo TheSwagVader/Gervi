@@ -11,7 +11,16 @@ class InvalidCharNumberException(BaseException): ...
 class TooBigOtherValueException(BaseException): ...
 
 class BinaryData:
+    """
+    Gervi Binary data class
+    A fudamental class for GVM. It is a list of numbers, which can be 1 or 0
+    """
     def __init__(self, size = 8):
+        """
+        BinaryData constructor
+        in: size (integer, optional, default = 8)
+        raises: TooSmallBinaryDataSizeException if size < 8
+        """
         if size < 8:
             raise TooSmallBinaryDataSizeException('Require 8 bit for BinaryData size, but got %d' % (size))
         self.__data = [0 for i in range(size)]
@@ -37,14 +46,32 @@ class BinaryData:
         return str(self) == str(other)
     
     def setValue(self, index):
+        """
+        BinaryData.setValue
+        in: index (integer)
+        out: none
+        Sets 1 at index in data list if it not are 0
+        """
         if self.__data[index] == 0:
             self.__data[index] = 1
     
     def resetValue(self, index):
+        """
+        BinaryData.resetValue
+        in: index (integer)
+        out: none
+        Sets 0 at index in data list if it not are 1
+        """
         if self.__data[index] == 1:
             self.__data[index] = 0
     
     def resetAll(self):
+        """
+        BinaryData.resetAll
+        in: none
+        out: none
+        Sets 0 at all indexes in data list
+        """
         for i in range(self.size):
             if self.__data[i] == 1:
                 self.resetValue(i)
@@ -54,6 +81,12 @@ class BinaryData:
 
     #inserting methods
     def valueOf(self, binaryDataObject):
+        """
+        BinaryData.valueOf
+        in: binaryDataObject (BinaryData)
+        out: none
+        Copy value of binaryDataObject
+        """
         if str(self).find('1') != -1:
             self.resetAll()
         cachedbdo = str(binaryDataObject)
@@ -68,6 +101,12 @@ class BinaryData:
                 self.resetValue(i)
 
     def valueOfNumber(self, integerValue):
+        """
+        BinaryData.valueOfNumber
+        in: integerValue (integer)
+        out: none
+        Transform integerValue to binary form and copy it in data list. Ignores sign.
+        """
         if str(self).find('1') != -1:
             self.resetAll()
         inInt = bin(integerValue)[2:]
@@ -80,13 +119,38 @@ class BinaryData:
                 self.setValue(i)
 
     def valueOfChar(self, character):
+        """
+        BinaryData.valueOfChar
+        in: character (char)
+        out: none
+        It calls BinaryData.valueOfNumber(ord(character))
+        """
         self.valueOfNumber(ord(character))
     
     def valueOfBoolean(self, booleanValue):
+        """
+        BinaryData.Boolean
+        in: booleanValue (bool)
+        out: none
+        If booleanValue is False then it records 0 in data list, else it records 1
+        """
         if booleanValue:
             self.valueOfNumber(1)
         else:
             self.valueOfNumber(0)
+    
+    def valueOfStringBinaryDataObject(self, strBDO):
+        if str(self).find('1') != -1:
+            self.resetAll()
+        supplier = self.size - len(strBDO)
+        if supplier < 0:
+            raise TooBigValueOfException('The size of binaryDataObject greater than %s bits' % (self.size))
+        strBDO = '0' * supplier + strBDO
+        for i in range(self.size):
+            if strBDO[i] == '1':
+                self.setValue(i)
+            else:
+                self.resetValue(i)
     #end inserting methods
 
     #getting methods
