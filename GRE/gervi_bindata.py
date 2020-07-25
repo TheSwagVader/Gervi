@@ -34,14 +34,16 @@ class BinaryData:
     def __returnStrArgs(self, other):
         return [str(self), str(other)]
     
-    def __supply(self, other):
+    def __fill(self, other):
         processList = self.__returnStrArgs(other)
-        supplier = len(processList[0]) - len(processList[1])
-        if supplier < 0:
+        filler = len(processList[0]) - len(processList[1])
+        if filler < 0:
             raise TooBigOtherValueException('Size of other (%d bits) greater than %d bits' % (other.size, self.size))
-        processList[1] = '0' * supplier + processList[1]
+        processList[1] = '0' * filler + processList[1]
         return processList
 
+    def __getNums(self, other):
+        return [self.getInt(), other.getInt()]
     def __eq__(self, other):
         return str(self) == str(other)
     
@@ -90,10 +92,10 @@ class BinaryData:
         if str(self).find('1') != -1:
             self.resetAll()
         cachedbdo = str(binaryDataObject)
-        supplier = self.size - len(cachedbdo)
-        if supplier < 0:
+        filler = self.size - len(cachedbdo)
+        if filler < 0:
             raise TooBigValueOfException('The size of binaryDataObject greater than %s bits' % (self.size))
-        cachedbdo = '0' * supplier + cachedbdo
+        cachedbdo = '0' * filler + cachedbdo
         for i in range(self.size):
             if cachedbdo[i] == '1':
                 self.setValue(i)
@@ -110,10 +112,10 @@ class BinaryData:
         if str(self).find('1') != -1:
             self.resetAll()
         inInt = bin(integerValue)[2:]
-        supplier = self.size - len(inInt)
-        if supplier < 0:
+        filler = self.size - len(inInt)
+        if filler < 0:
             raise TooBigValueOfException('The size of inInt greater than %s bits' % (self.size))
-        inInt = '0' * supplier + inInt
+        inInt = '0' * filler + inInt
         for i in range(self.size):
             if inInt[i] == '1':
                 self.setValue(i)
@@ -142,10 +144,10 @@ class BinaryData:
     def valueOfStringBinaryDataObject(self, strBDO):
         if str(self).find('1') != -1:
             self.resetAll()
-        supplier = self.size - len(strBDO)
-        if supplier < 0:
+        filler = self.size - len(strBDO)
+        if filler < 0:
             raise TooBigValueOfException('The size of binaryDataObject greater than %s bits' % (self.size))
-        strBDO = '0' * supplier + strBDO
+        strBDO = '0' * filler + strBDO
         for i in range(self.size):
             if strBDO[i] == '1':
                 self.setValue(i)
@@ -154,14 +156,16 @@ class BinaryData:
     #end inserting methods
 
     #getting methods
+    def get(self):
+        return self.__data
 
     def getInt(self):
         numString = str(self)
-        numString = numString[numString.find('1'):]
-        if numString[0] == 0:
+        #numString = numString[numString.find('1'):]
+        if numString[0] == '0':
             return int(numString[1:], 2)
         else:
-            return -int(numString[1:], 2)
+            return int(numString[1:], 2) * -1
     
     def getUnsignedInt(self):
         return int(str(self), 2)
@@ -191,7 +195,7 @@ class BinaryData:
     def logicAnd(self, other):
         #if self.size < second.size:
         #    raise TooBigV
-        processData = self.__supply(other)
+        processData = self.__fill(other)
         for i in range(self.size):
             if processData[0][i] == '1' == processData[1][i]:
                 self.setValue(i)
@@ -199,7 +203,7 @@ class BinaryData:
                 self.resetValue(i)
     
     def logicOr(self, other):
-        processData = self.__supply(other)
+        processData = self.__fill(other)
         for i in range(self.size):
             if processData[0][i] == '1' or processData[1][i] == '1':
                 self.setValue(i)
@@ -214,7 +218,7 @@ class BinaryData:
                 self.resetValue(i)
     
     def logicXor(self, other):
-        processData = self.__supply(other)
+        processData = self.__fill(other)
         for i in range(self.size):
             if (processData[0][i] == '1' and processData[1][i] == '1') or (processData[0][i] == '0' and processData[1][i] == '0'):
                 self.resetValue(i)
@@ -222,7 +226,7 @@ class BinaryData:
                 self.setValue(i)
     
     def logicNand(self, other):
-        processData = self.__supply(other)
+        processData = self.__fill(other)
         for i in range(self.size):
             if not (processData[0][i] == '1' == processData[1][i]):
                 self.setValue(i)
@@ -230,7 +234,7 @@ class BinaryData:
                 self.resetValue(i)
     
     def logicNor(self, other):
-        processData = self.__supply(other)
+        processData = self.__fill(other)
         for i in range(self.size):
             if not (processData[0][i] == '1' or processData[1][i] == '1'):
                 self.setValue(i)
@@ -238,7 +242,7 @@ class BinaryData:
                 self.resetValue(i)
 
     def logicXnor(self, other):
-        processData = self.__supply(other)
+        processData = self.__fill(other)
         for i in range(self.size):
             if not (processData[0][i] == '1' and processData[1][i] == '1') or not (processData[0][i] == '0' and processData[1][i] == '0'):
                 self.resetValue(i)
@@ -248,7 +252,7 @@ class BinaryData:
     #uncommon logical methods
 
     def logicImp(self, other):
-        processData = self.__supply(other)
+        processData = self.__fill(other)
         for i in range(self.size):
             if processData[0][i] == '1' and processData[1][i] == '0':
                 self.setValue(i)
@@ -256,7 +260,7 @@ class BinaryData:
                 self.resetValue(i)
     
     def logicRimp(self, other):
-        processData = self.__supply(other)
+        processData = self.__fill(other)
         for i in range(self.size):
             if processData[0][i] == '0' and processData[1][i] == '1':
                 self.setValue(i)
@@ -264,7 +268,7 @@ class BinaryData:
                 self.resetValue(i)
     
     def logicNimp(self, other):
-        processData = self.__supply(other)
+        processData = self.__fill(other)
         for i in range(self.size):
             if not (processData[0][i] == '1' and processData[1][i] == '0'):
                 self.setValue(i)
@@ -272,7 +276,7 @@ class BinaryData:
                 self.resetValue(i)
     
     def logicNrimp(self, other):
-        processData = self.__supply(other)
+        processData = self.__fill(other)
         for i in range(self.size):
             if not (processData[0][i] == '0' and processData[1][i] == '1'):
                 self.setValue(i)
@@ -280,7 +284,7 @@ class BinaryData:
                 self.resetValue(i)
     
     def logicEqv(self, other):
-        processData = self.__supply(other)
+        processData = self.__fill(other)
         for i in range(self.size):
             if processData[0][i] == processData[1][i]:
                 self.setValue(i)
@@ -288,7 +292,7 @@ class BinaryData:
                 self.resetValue(i)
     
     def logicNeqv(self, other):
-        processData = self.__supply(other)
+        processData = self.__fill(other)
         for i in range(self.size):
             if processData[0][i] != processData[1][i]:
                 self.setValue(i)
@@ -297,3 +301,20 @@ class BinaryData:
     
     #end logical methods
     
+    #math methods
+    def add(self, other):
+        processData = self.__getNums( other)
+        self.valueOfNumber(processData[0] + processData[1])
+
+    def substract(self, other):
+        processData = self.__getNums( other)
+        self.valueOfNumber(processData[0] - processData[1])
+
+    def multiply(self, other):
+        processData = self.__getNums( other)
+        self.valueOfNumber(processData[0] * processData[1])
+
+    def divide(self, other):
+        processData = self.__getNums( other)
+        self.valueOfNumber(processData[0] / processData[1])    
+    #end math methods

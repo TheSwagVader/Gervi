@@ -26,7 +26,10 @@ class WorkingMemory:
             self.__memory[addrY][addrX].valueOf(data)
     
     def read(self, ramObject, addrX, addrY, ramDestinationAddrX = 'nearest_free', ramDestinationAddrY = 'nearest_free'):
-        ramObject.push(self.__memory[addrY][addrX], ramDestinationAddrX, ramDestinationAddrY)
+        ramObject.push(self.__memory[addrY][addrX].get(), ramDestinationAddrX, ramDestinationAddrY)
+    
+    def readInt(self, ramObject, addrX, addrY, ramDestinationAddrX = 'nearest_free', ramDestinationAddrY = 'nearest_free'):
+        ramObject.push(self.__memory[addrY][addrX].getInt(), ramDestinationAddrX, ramDestinationAddrY)
     
     def protect(self, addrX, addrY):
         if not self.__protected[addrY][addrX]:

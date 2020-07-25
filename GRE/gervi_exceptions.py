@@ -14,7 +14,7 @@ class GerviError(GerviThrowable):
         self.__errorLevel = errorLevel
     
     def throw(self):
-        print('%s (%s): %s' % (self.__errorName, self.__errorLevel.name, self.__errorMsg))
+        print('[%s] %s : %s' % (self.__errorLevel.name, self.__errorName, self.__errorMsg))
         if self.__errorLevel == ErrorLevels.WARNING:
             return 0
         elif self.__errorLevel == ErrorLevels.ERROR:
@@ -31,3 +31,7 @@ class GerviException(GerviThrowable):
     def throw(self):
         print('%s: %s' % (self.__exceptionName, self.__exceptionMsg))
         return 1
+
+UnknownError = GerviError('UnknownError', 'an unknown error called', ErrorLevels.FATAL)
+
+UnknownException = GerviException('UnknownException', 'an unknown exception throwed')
