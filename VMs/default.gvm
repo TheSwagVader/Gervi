@@ -1,12 +1,12 @@
-[META-INFO]
-Name=Segon default
+[META]
+Name=Gervi default
 Author=TheSwagVader
+AuthorEmail=egorzverev666@gmail.com
 Version=1.0
+Description=a default Gervi VM
 [MEMORY]
 SegmentSize=8 ; in bits
-[WM]
-SizeV=4
-SizeH=4
-[RAM]
-SizeV=1
-SizeH=1
+WMSizeV=4
+WMSizeH=4
+RAMSizeV=1
+RAMSizeH=1
