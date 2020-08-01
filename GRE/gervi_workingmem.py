@@ -1,4 +1,5 @@
 from gervi_bindata import BinaryData
+
 #from gervi_ram import RandomAccessMemory as RAM
 class WritingToProtectedAddressException(BaseException): ...
 
