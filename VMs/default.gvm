@@ -5,7 +5,7 @@ AuthorEmail=egorzverev666@gmail.com
 Version=1.0
 Description=a default Gervi VM
 [MEMORY]
-SegmentSize=8 ; in bits
+SegmentSize=8
 WMSizeV=4
 WMSizeH=4
 RAMSizeV=1
