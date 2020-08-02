@@ -1,6 +1,7 @@
 from gervi_vmf import VirtualMachineFile
 from gervi_workingmem import WorkingMemory
 from gervi_ram import RandomAccessMemory
+from gervi_extcom import CommandRunner
 
 
 class VirtualMachine:
@@ -17,6 +18,8 @@ class VirtualMachine:
         self.__workingMemory = WorkingMemory(self.__segmentSize, properties['wmsizeh'], properties['wmsizev'])
         self.__RAM = RandomAccessMemory(properties['ramsizeh'], properties['ramsizev'])
         self.__statusCode = 0
+        self.__commandRunner = CommandRunner(vmf)
     
     def run(self):
-        print('It works!')
+        while True:
+            self.__commandRunner.run(input())

@@ -21,3 +21,7 @@ class VirtualMachineFile:
             'ramsizev' : self.file.getint('MEMORY', 'RAMSizeV'),
             'ramsizeh' : self.file.getint('MEMORY', 'RAMSizeH')
         }
+    
+    def getModules(self):
+        moduleStr = self.file.get('MODULE', 'ModuleList')
+        return moduleStr.split(',')

@@ -303,18 +303,18 @@ class BinaryData:
     
     #math methods
     def add(self, other):
-        processData = self.__getNums( other)
+        processData = self.__getNums(other)
         self.valueOfNumber(processData[0] + processData[1])
 
     def substract(self, other):
-        processData = self.__getNums( other)
+        processData = self.__getNums(other)
         self.valueOfNumber(processData[0] - processData[1])
 
     def multiply(self, other):
-        processData = self.__getNums( other)
+        processData = self.__getNums(other)
         self.valueOfNumber(processData[0] * processData[1])
 
     def divide(self, other):
-        processData = self.__getNums( other)
+        processData = self.__getNums(other)
         self.valueOfNumber(processData[0] / processData[1])    
     #end math methods

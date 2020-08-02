@@ -10,3 +10,5 @@ WMSizeV=4
 WMSizeH=4
 RAMSizeV=1
 RAMSizeH=1
+[MODULE]
+ModuleList=mem
