@@ -5,6 +5,7 @@ class CommandRunner:
         self.modules = virtualMachineFile.getModules()
     
     def run(self, command):
+        command += '.py'
         for module in self.modules:
             modulePath = 'vm_modules/%s/' % (module)
             moduleComms = os.listdir(modulePath)

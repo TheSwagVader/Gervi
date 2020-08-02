@@ -10,6 +10,7 @@ class VirtualMachine:
         vmf.load(file)
         properties = vmf.getProperties()
         self.__name = properties['name']
+        self.__shortname = properties['shortname']
         self.__author = properties['author']
         self.__email = properties['email']
         self.__version = properties['version']
@@ -21,5 +22,10 @@ class VirtualMachine:
         self.__commandRunner = CommandRunner(vmf)
     
     def run(self):
+        print('[%s v. %s][by %s(%s)]\n[%s]' % (self.__name, self.__version, self.__author, self.__email, self.__desc))
         while True:
-            self.__commandRunner.run(input())
+            command = input('%s>' % (self.__shortname))
+            if command == 'shtd': \
+                break
+            else:
+                self.__commandRunner.run(input('%s>' % (self.__shortname)))

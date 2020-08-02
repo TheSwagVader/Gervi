@@ -11,6 +11,7 @@ class VirtualMachineFile:
     def getProperties(self):
         return {
             'name' : self.file.get('META', 'Name'),
+            'shortname' : self.file.get('META', 'ShortName'),
             'author' : self.file.get('META', 'Author'),
             'email' : self.file.get('META', 'AuthorEmail'),
             'version' : self.file.get('META', 'Version'),

@@ -31,6 +31,21 @@ class WorkingMemory:
     
     def readInt(self, ramObject, addrX, addrY, ramDestinationAddrX = 'nearest_free', ramDestinationAddrY = 'nearest_free'):
         ramObject.push(self.__memory[addrY][addrX].getInt(), ramDestinationAddrX, ramDestinationAddrY)
+
+    def readUnsignedInt(self, ramObject, addrX, addrY, ramDestinationAddrX = 'nearest_free', ramDestinationAddrY = 'nearest_free'):
+        ramObject.push(self.__memory[addrY][addrX].getUnsignedInt(), ramDestinationAddrX, ramDestinationAddrY)
+    
+    def readWord(self, ramObject, addrX, addrY, ramDestinationAddrX = 'nearest_free', ramDestinationAddrY = 'nearest_free'):
+        ramObject.push(self.__memory[addrY][addrX].getWord(), ramDestinationAddrX, ramDestinationAddrY)
+    
+    def readByte(self, ramObject, addrX, addrY, ramDestinationAddrX = 'nearest_free', ramDestinationAddrY = 'nearest_free'):
+        ramObject.push(self.__memory[addrY][addrX].getByte(), ramDestinationAddrX, ramDestinationAddrY)
+    
+    def readChar(self, ramObject, addrX, addrY, ramDestinationAddrX = 'nearest_free', ramDestinationAddrY = 'nearest_free'):
+        ramObject.push(self.__memory[addrY][addrX].getChar(), ramDestinationAddrX, ramDestinationAddrY)
+    
+    def readBoolean(self, ramObject, addrX, addrY, ramDestinationAddrX = 'nearest_free', ramDestinationAddrY = 'nearest_free'):
+        ramObject.push(self.__memory[addrY][addrX].getBoolean(), ramDestinationAddrX, ramDestinationAddrY)
     
     def protect(self, addrX, addrY):
         if not self.__protected[addrY][addrX]:
